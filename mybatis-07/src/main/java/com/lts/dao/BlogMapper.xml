@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lts.dao.BlogMapper">
+
+<!--    可以利用sql标签减少代码的重复-->
+<!--    最好使用单表来定义SQL片段-->
+<!--    尽量不要把where标签写入sql标签里面-->
+    <sql id="if-title-author">
+        <if test="title != null">
+            and title=#{title}
+        </if>
+        <if test="author">
+            and author=#{author}
+        </if>
+    </sql>
+
+
+    <insert id="addbook" parameterType="Blog">
+        insert into mybatis.blog (id,title,author,create_date,view)
+        value (#{id},#{title},#{author},#{create_Date},#{view})
+    </insert>
+
+    <select id="selectsql" parameterType="map" resultType="Blog">
+--         在这里有一个where的问题 如果说我不加入where1=1的话，那么就会发生select * from
+-- mybatis.blog and title != null的情况，这样的sql语句是会报错的，要解决的的话可以使用
+-- where标签它会自动帮你判断是否存在第一个条件，判断是否把第一个and去掉
+        select * from mybatis.blog
+        <where>
+            <include refid="if-title-author"/>
+        </where>
+
+    </select>
+
+    <select id="querySql" parameterType="map" resultType="Blog">
+        select * from mybatis.blog
+        <where>
+            <choose>
+                <when test="title!=null">
+                    title=#{title}
+                </when>
+                <when test="author!=null">
+                    and author=#{author}
+                </when>
+                <otherwise>
+                    and view=#{view}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateblog" parameterType="map">
+        update blog
+        <set>
+            <if test="title!=null">
+                title=#{title},
+            </if>
+            <if test="author!=null">
+                author=#{author}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
+
+<!--    使用foreach来写语句进行查询-->
+    <select id="selectByforeach" parameterType="map" resultType="Blog">
+        select * from mybatis.blog
+        <where>
+            <foreach collection="ids" item="id" open="and (" close=")" separator="or">
+                id=#{id}
+            </foreach>
+        </where>
+    </select>
+</mapper>

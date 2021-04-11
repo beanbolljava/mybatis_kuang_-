@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lts.dao.userDao">
+    <select id="getuserList" resultType="com.lts.pojo.user">
+        select * from mybatis.user
+    </select>
+
+    <select id="getuserbyid" parameterType="int" resultType="com.lts.pojo.user">
+        select * from mybatis.user where id=#{id};
+    </select>
+
+    <select id="getuserbylike" resultType="com.lts.pojo.user">
+        select * from mybatis.user where username like #{username};
+    </select>
+
+    <insert id="adduser" parameterType="com.lts.pojo.user">
+        insert into mybatis.user (id,username,birthday,sex,address) value (#{id},#{username},#{birthday},#{sex},#{address});
+    </insert>
+
+    <insert id="adduserbymap" parameterType="map">
+        insert into mybatis.user (id,username,birthday,sex,address) value (#{userid},#{userusername},#{userbirthday},#{usersex},#{useraddress});
+    </insert>
+
+    <update id="updatede" parameterType="com.lts.pojo.user">
+        update mybatis.user set id=#{id},username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} where id=#{id};
+    </update>
+
+    <delete id="deletet" parameterType="int">
+        delete from mybatis.user where id=#{id}
+    </delete>
+</mapper>

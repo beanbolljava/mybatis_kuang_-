@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.com.lts.dao.userMapper">
+    <select id="getuserList" resultType="hello">
+        select * from mybatis.user;
+    </select>
+
+    <select id="getuserbyid" parameterType="int" resultType="hello">
+        select * from mybatis.user where id=#{id};
+    </select>
+
+    <insert id="adduser" parameterType="hello">
+        insert into mybatis.user (id,username,birthday,sex,address) value (#{id},#{username},#{birthday},#{sex},#{address});
+    </insert>
+
+    <update id="updatede" parameterType="hello">
+        update mybatis.user set id=#{id},username=#{username},birthday=#{birthday},sex=#{sex},address=#{address} where id=#{id};
+    </update>
+
+    <delete id="deletet" parameterType="int">
+        delete from mybatis.user where id=#{id}
+    </delete>
+</mapper>
